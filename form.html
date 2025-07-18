@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Student Registration</title>
+    <style>
+        .form-flex-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 40px;
+        }
+        .form-fields {
+            flex: 1;
+        }
+        .photo-top-right {
+            min-width: 140px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .form-group {
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            margin-bottom: 6px;
+            font-weight: bold;
+        }
+        .photo-box {
+            width: 120px;
+            height: 140px;
+            border: 2px dashed #888;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 8px;
+            position: relative;
+            background: #fff;
+        }
+        .photo-box img {
+            max-width: 100%;
+            max-height: 100%;
+            display: none;
+            object-fit: contain;
+        }
+        #photoPlaceholder {
+            position: absolute;
+            color: #888;
+            font-weight: bold;
+            font-size: 1.1em;
+            pointer-events: none;
+        }
+        .gender-photo-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 40px;
+        }
+        .gender-group {
+            flex: 1;
+        }
+        @media (max-width: 600px) {
+            .form-flex-container {
+                flex-direction: column;
+                gap: 0;
+            }
+            .photo-top-right {
+                width: 100%;
+                min-width: unset;
+                margin-bottom: 20px;
+                order: -1;
+            }
+            .form-fields {
+                width: 100%;
+            }
+            .gender-photo-row {
+                flex-direction: column;
+                gap: 0;
+            }
+            .gender-group {
+                width: 100%;
+            }
+        }
+    </style>
+    <script src="script.js"></script>
+</head>
+<body>
+    <div class="form-header-left">
+        <h2>Student Registration Form</h2>
+        <form action="form.php" method="post" enctype="multipart/form-data" id="studentForm">
+            <div class="form-group">
+                <label for="student_name">Name:</label>
+                <input type="text" id="student_name" name="student_name" required>
+                <span class="valid-icon">✔️</span>
+                <span class="invalid-icon">❌</span>
+                <div class="error-message">Name is required and must be at least 2 characters.</div>
+            </div>
+            <div class="form-group">
+                <label for="registration_number">Registration Number:</label>
+                <input type="text" id="registration_number" name="registration_number" required>
+                <span class="valid-icon">✔️</span>
+                <span class="invalid-icon">❌</span>
+                <div class="error-message">Registration number is required and must be at least 3 characters.</div>
+            </div>
+            <div class="gender-photo-row">
+                <div class="gender-group">
+                    <label>Gender:</label>
+                    <div>
+                        <input type="radio" id="gender_male" name="gender" value="Male" required>
+                        <label for="gender_male">Male</label>
+                        <input type="radio" id="gender_female" name="gender" value="Female">
+                        <label for="gender_female">Female</label>
+                        <input type="radio" id="gender_other" name="gender" value="Other">
+                        <label for="gender_other">Other</label>
+                    </div>
+                </div>
+                <div class="photo-group photo-top-right" id="photoSection">
+                    <label>Student Photo:</label>
+                    <div class="photo-box">
+                        <img id="photoPreview" src="" alt="PHOTO" />
+                        <span id="photoPlaceholder">PHOTO</span>
+                    </div>
+                    <input type="file" id="student_image" name="student_image" accept="image/*" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Courses:</label>
+                <div>
+                    <input type="checkbox" id="course_math" name="courses" value="Mathematics">
+                    <label for="course_math">Mathematics</label>
+                    <input type="checkbox" id="course_physics" name="courses" value="Physics">
+                    <label for="course_physics">Physics</label>
+                    <input type="checkbox" id="course_chemistry" name="courses" value="Chemistry">
+                    <label for="course_chemistry">Chemistry</label>
+                    <input type="checkbox" id="course_cs" name="courses" value="Computer Science">
+                    <label for="course_cs">Computer Science</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="branch">Branch:</label>
+                <select id="branch" name="branch" required>
+                    <option value="">Select Branch</option>
+                    <option value="CSE">Computer Science Engineering</option>
+                    <option value="ECE">Electronics and Communication Engineering</option>
+                    <option value="EEE">Electrical and Electronics Engineering</option>
+                    <option value="ME">Mechanical Engineering</option>
+                    <option value="CE">Civil Engineering</option>
+                </select>
+                <span class="valid-icon">✔️</span>
+                <span class="invalid-icon">❌</span>
+                <div class="error-message">Please select a branch.</div>
+            </div>
+            <div class="form-group">
+                <label for="academic_year">Academic Year:</label>
+                <select id="academic_year" name="academic_year" required>
+                    <option value="">Select Year</option>
+                    <option value="2020-2021">2020-2021</option>
+                    <option value="2021-2022">2021-2022</option>
+                    <option value="2022-2023">2022-2023</option>
+                    <option value="2023-2024">2023-2024</option>
+                    <option value="2024-2025">2024-2025</option>
+                </select>
+                <span class="valid-icon">✔️</span>
+                <span class="invalid-icon">❌</span>
+                <div class="error-message">Please select an academic year.</div>
+            </div>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
