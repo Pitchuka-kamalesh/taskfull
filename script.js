@@ -1,61 +1,63 @@
-function validateInput(input, validator, errorMsg) {
-    const validIcon = input.parentElement.querySelector('.valid-icon');
-    const invalidIcon = input.parentElement.querySelector('.invalid-icon');
+function validateInput(input, validator, errorMsg, showErrors = true) {
     const errorMessage = input.parentElement.querySelector('.error-message');
-    if (validator(input.value)) {
-        input.classList.add('valid');
-        input.classList.remove('invalid');
-        if (validIcon) validIcon.style.display = 'inline';
-        if (invalidIcon) invalidIcon.style.display = 'none';
-        if (errorMessage) errorMessage.style.display = 'none';
-    } else {
-        input.classList.add('invalid');
-        input.classList.remove('valid');
-        if (validIcon) validIcon.style.display = 'none';
-        if (invalidIcon) invalidIcon.style.display = 'inline';
-        if (errorMessage) {
+    const isValid = validator(input.value);
+
+    input.classList.toggle('valid', isValid);
+    input.classList.toggle('invalid', !isValid);
+
+    if (errorMessage) {
+        if (!isValid && showErrors) {
             errorMessage.textContent = errorMsg;
             errorMessage.style.display = 'block';
+        } else {
+            errorMessage.style.display = 'none';
         }
     }
+
+    return isValid;
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-    // Name validation
+document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('studentForm');
+
     const nameInput = document.getElementById('student_name');
-    nameInput.addEventListener('input', function() {
-        validateInput(nameInput, v => v.trim().length >= 2, 'Name is required and must be at least 2 characters.');
-    });
-
-    // Registration number validation
     const regInput = document.getElementById('registration_number');
-    regInput.addEventListener('input', function() {
-        validateInput(regInput, v => v.trim().length >= 3, 'Registration number is required and must be at least 3 characters.');
+    const yearInput = document.getElementById('academic_year');
+    const branchInput = document.getElementById('branch');
+
+    nameInput.addEventListener('blur', () => {
+        validateInput(nameInput, v => v.trim().length >= 2, 'Name must be at least 2 characters.');
     });
 
-    // Academic year validation
-    const yearInput = document.getElementById('academic_year');
-    yearInput.addEventListener('change', function() {
+    regInput.addEventListener('blur', () => {
+        validateInput(regInput, v => v.trim().length >= 3, 'Registration number must be at least 3 characters.');
+    });
+
+    yearInput.addEventListener('blur', () => {
         validateInput(yearInput, v => v !== '', 'Please select an academic year.');
     });
 
-    // Branch validation
-    const branchInput = document.getElementById('branch');
-    branchInput.addEventListener('change', function() {
+    branchInput.addEventListener('blur', () => {
         validateInput(branchInput, v => v !== '', 'Please select a branch.');
     });
 
-    // Initial validation on page load
-    nameInput.dispatchEvent(new Event('input'));
-    regInput.dispatchEvent(new Event('input'));
-    yearInput.dispatchEvent(new Event('change'));
-    branchInput.dispatchEvent(new Event('change'));
+    form.addEventListener('submit', e => {
+        const isNameValid = validateInput(nameInput, v => v.trim().length >= 2, 'Name must be at least 2 characters.');
+        const isRegValid = validateInput(regInput, v => v.trim().length >= 3, 'Registration number must be at least 3 characters.');
+        const isYearValid = validateInput(yearInput, v => v !== '', 'Please select an academic year.');
+        const isBranchValid = validateInput(branchInput, v => v !== '', 'Please select a branch.');
 
-    // Image preview logic
-    document.getElementById('student_image').addEventListener('change', function(event) {
+        if (!isNameValid || !isRegValid || !isYearValid || !isBranchValid) {
+            e.preventDefault();
+        }
+    });
+
+    // Image preview
+    document.getElementById('student_image').addEventListener('change', function (event) {
         const [file] = event.target.files;
         const img = document.getElementById('photoPreview');
         const placeholder = document.getElementById('photoPlaceholder');
+
         if (file) {
             img.src = URL.createObjectURL(file);
             img.style.display = 'block';
@@ -66,4 +68,4 @@ document.addEventListener('DOMContentLoaded', function() {
             placeholder.style.display = 'block';
         }
     });
-}); 
+});
